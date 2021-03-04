@@ -94,28 +94,59 @@ class Note extends Model
      * Método responsável por excluir dados do banco de dados
      * @param integer $id
      */
+    public function updateImagem($id)
+    {
+        $sql = "UPDATE notes SET titulo = ?, texto = ?, imagem = ? WHERE id = ?";
+        $stmt = Model::getConn()->prepare($sql); //Prepara a consulta SQL e retorna um identificador de instrução a ser usado para outras operações na instrução.
+
+        $stmt->bindValue(1, $this->titulo);
+        $stmt->bindValue(2, $this->texto);
+        $stmt->bindValue(3, $this->imagem);
+        $stmt->bindValue(4, $id);
+
+        if ($stmt->execute()) {
+
+            return true;
+        } else {
+
+            return false;
+        }
+    }
+
+    /**
+     * Método responsável por excluir dados do banco de dados
+     * @param integer $id
+     */
     public function delete($id)
     {
 
-        $sql = "SELECT imagem FROM notes WHERE id = ?";
-        $stmt = Model::getConn()->prepare($sql); //Prepara a consulta SQL e retorna um identificador de instrução a ser usado para outras operações na instrução.
-        $stmt->bindValue(1, $id);
-        $stmt->execute();
+        $resultado = $this->findId($id);
 
-
-        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if(!empty($resultado['imagem'])){
             unlink('images/'.$resultado['imagem']);
         }
 
-
-
-
-
         $sql = "DELETE FROM notes WHERE id = ?";
         $stmt = Model::getConn()->prepare($sql); //Prepara a consulta SQL e retorna um identificador de instrução a ser usado para outras operações na instrução.
         $stmt->bindValue(1, $id);
+
+        if ($stmt->execute()) {
+
+            return true;
+        } else {
+
+            return false;
+        }
+    }
+
+    public function deleteImage($id)
+    {
+        $sql = "UPDATE notes SET imagem = ? WHERE id = ?";
+        $stmt = Model::getConn()->prepare($sql); //Prepara a consulta SQL e retorna um identificador de instrução a ser usado para outras operações na instrução.
+
+        $stmt->bindValue(1, "");
+        $stmt->bindValue(2, $id);
 
         if ($stmt->execute()) {
 
