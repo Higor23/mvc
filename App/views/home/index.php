@@ -1,5 +1,4 @@
 <?php
-
 $mensagem = '';
 if (!empty($data['mensagem'])) {
     foreach ($data['mensagem'] as $m) {
@@ -11,16 +10,42 @@ if (!empty($data['mensagem'])) {
     }
 }
 
-
 ?>
 
-<?php foreach ($data['registros'] as $note) : ;?>
+<!-- Tabela -->
+<section>
+    <a href="/notes/criar">
+        <button class="btn btn-success">Adicionar Livro</button>
+    </a>
+</section>
 
-    <img src="/images/<?php echo $note['imagem']; ?>" width="300" alt="imagem">
-    <h1> <a href="/notes/ver/<?php echo $note['id']; ?>"><?php echo $note['titulo']; ?></a></h1>
+<section>
+    <table class="table bg-light mt-3">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Imagem</th>
+                <th>Título</th>
+                <th>Data da última alteração</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
 
-    <p><?php echo $note['texto']; ?></p>
-    <a href="/notes/editar/<?php echo $note['id']; ?>" class="btn btn-warning">Editar</a>
-    <a href="/notes/excluir/<?php echo $note['id']; ?>" class="btn btn-danger">Excluir</a>
+        <tbody>
+            <?php foreach ($data['registros'] as $note) :; ?>
+                <tr style="vertical-align: middle;">
+                    <td><?php echo $note['id']; ?></td>
+                    <td><img src="/images/<?php echo $note['imagem']; ?>" width="100"  " alt="imagem"></td>
+                    <td ><?php echo $note['titulo']; ?></td>
+                    <td><?php echo date('d/m/Y', strtotime($note['data'])); ?></td>
+                    <td>
+                        <a href="/notes/ver/<?php echo $note['id']; ?>" class="btn btn-warning">Detalhes</a>
+                        <a href="/notes/editar/<?php echo $note['id']; ?>" class="btn btn-primary">Editar</a>
+                        <a href="/notes/excluir/<?php echo $note['id']; ?>" class="btn btn-danger" id="excluir" onclick="return confirm('Tem certeza que deseja deletar esse registro?');">Excluir</a>
+                    </td>
 
-<?php endforeach; ?>
+                <tr>
+                <?php endforeach; ?>
+        </tbody>
+    </table>
+</section>

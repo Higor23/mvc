@@ -1,4 +1,4 @@
-<h1>Criar bloco de anotações</h1>
+<h2 class="">Adicionar livro</h2>
 
 <?php
 $mensagem = '';
@@ -26,12 +26,13 @@ if (!empty($data['msgValidacao'])) {
 <form action="/notes/criar" class="form-control" method="POST" enctype="multipart/form-data">
     <label for="">Título</label>
     <input type="text" class="form-control" name="titulo"><br>
-    <label for="">Texto</label>
-    <textarea name="texto" class="form-control"></textarea>
+    <label for="">Anotações</label>
+    <textarea name="texto" class="form-control" id="" cols="30" rows="10"></textarea>
     <br><br>
     <label for="">Arquivo</label>
     <input type="file" name="imagem">
     <br><br>
-    </div>
+    <div class="form-group">
     <button class="btn btn-success" name="cadastrar">Cadastrar</button>
+    </div>
 </form>
