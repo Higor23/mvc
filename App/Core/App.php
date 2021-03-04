@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Core;
 
 class App
@@ -8,21 +7,21 @@ class App
     /**
      * Identifica o Controller que será acessado caso o
      * usuário digitar somente a url inicial padrão, com ou sem a barra.
-     * É o Controller padrão
+     * É responsável por identificar a rota base
      * @var string
      */
     protected $controller = 'home';
 
     /**
      * Identifica o método que será acessado dentro do controller
-     * @var string
+     * @var string $view
      */
     protected $method = 'index';
 
 
     /**
      * Identifica o parâmetro que será passado na url
-     * @var string
+     * @var array $params
      */
     protected $params = [];
 
@@ -31,24 +30,24 @@ class App
      */
     public function __construct()
     {
-        print_r($url = $this->parseUrl());
-        // $url = $this->parseUrl();
+        $url = $this->parseUrl();
+        //    $url = $this->parseUrl();
 
         //VERIFICA SE EXISTE O CONTROLLER
-        if (file_exists('../App/Controllers'.$url[1].'.php')) :
+        if (file_exists('../App/Controllers/' . $url[1] . '.php')) :
             $this->controller = $url[1];
             unset($url[1]);
         endif;
 
         //IMPORTA O CONTROLLER
-        require_once '../App/Controllers/'.$this->controller.'.php';
+        require_once '../App/Controllers/' . $this->controller . '.php';
 
         //VERIFICA SE EXISTE O MÉTODO DENTRO DO CONTROLLER
         //O ATRIBUTO $controller PASSA A SER UM OBJETO
         $this->controller = new $this->controller;
 
-        if(isset($url[2])):
-            if(method_exists($this->controller, $url[2])):
+        if (isset($url[2])) :
+            if (method_exists($this->controller, $url[2])) :
                 $this->method = $url[2];
                 //LIMPA
                 unset($url[2]);
@@ -57,10 +56,9 @@ class App
         endif;
         //VERIFICA SE EXISTEM PARÂMETROS NA URL
         $this->params = $url ? array_values($url) : [];
-        // var_dump($this->params);
 
         //EXECUTA O MÉTODO DENTRO DO CONTROLLER
-        call_user_func_array([$this->controller,$this->method],$this->params);
+        call_user_func_array([$this->controller, $this->method], $this->params);
     }
 
     /**
